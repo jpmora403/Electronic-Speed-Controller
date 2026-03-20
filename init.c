@@ -1,4 +1,5 @@
 #include <io.h>
+#include <interrupt.h>
 
 #define CLKSPD 20000000   
 
@@ -63,5 +64,12 @@ int init(void) {
 
     return 0;
 
+}
+
+int initISR(void) {
+    CPU_SREG |= CPU_I_bp;
+    AC0.INTCTRL = 0x1;
+
+    return 0;
 }
 
