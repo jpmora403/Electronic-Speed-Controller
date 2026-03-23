@@ -66,6 +66,12 @@ void running() {
 
 }
 
+void stall() {
+
+    return;
+
+}
+
 void commutate() {
     //Lock updates
     TCE0.CTRLESET |= 0x2;

@@ -26,7 +26,7 @@ typedef enum {
 
 extern volatile step_t current_step;
 extern volatile mode_t mode;
-volatile uint16_t throttle = 0;
+extern volatile uint16_t throttle;
 
 void ac0(void);
 void gpio(void);
