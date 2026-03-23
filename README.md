@@ -36,4 +36,6 @@ but essentially the arduino programs the AVR onboard using the UPDI test point b
 
 ## Status
 The project is still ongoing with hope of creating an entirely open-source drone design. The provided code is currently missing a start-up
-sequence, but most main loop logic is present along with initialization. 
+sequence, but most main loop logic is present along with initialization. Updates are coming to the PCB design soon, like a mosfet footprint
+that exposes copper for the drain, and most likely a section of vias around the battery ground input. Also, a different configuration on the IDRIVE
+pin of the DRV8320H for a higher source/sink current.
