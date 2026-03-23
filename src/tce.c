@@ -4,7 +4,7 @@
 
 #include <io.h>
 
-int tce0(void) {
+void tce0(void) {
 
     
     //Set pins as outputs
@@ -19,5 +19,4 @@ int tce0(void) {
     TCE0.CMP1 = 0;
     TCE0.CMP2 = 0;
 
-    return 0;
 } 

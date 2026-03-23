@@ -4,7 +4,7 @@
 
 #include <io.h>
 
-int wex(void) {
+void wex(void) {
 
     //DTI on wo
     WEX0.CTRLA = 0x3;
@@ -16,5 +16,4 @@ int wex(void) {
     WEX0.OUTOVEN = 0x1F;
     
 
-    return 0;
 }

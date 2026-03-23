@@ -8,8 +8,9 @@
 
 #include <io.h>
 #include <interrupt.h>
+#include "esc.h"
 
-int ac0(void) {
+void ac0(void) {
     
     //Disable digital input buffer on pd0 and set as input
     PORTD.DIRCLR = 0b100101;
@@ -19,18 +20,18 @@ int ac0(void) {
     PORTD.PIN5CTRL = PORT_ISC_INPUT_DISABLE_gc;
     PORTC.PIN3CTRL = PORT_ISC_INPUT_DISABLE_gc;
     
-    //medium hysteresis & enable
-    AC0.CTRLA = AC_HYSMODE_MEDIUM_gc | 0x1;
-    //Neg input = neutral, pos initialized to phase A
+    //small hysteresis & enable
+    AC0.CTRLA = AC_HYSMODE_SMALL_gc | 0x1;
+    //Neg input = neutral, pos initialized to phase C
     AC0.MUXCTRL = AC_INITVAL_LOW_gc | AC_MUXNEG_AINN1_gc
-                    | AC_MUXPOS_AINP0_gc;
+                    | AC_MUXPOS_AINP6_gc;
     //enable interrupts
     AC0.INTCTRL = 0x1;
     
-    return 0;
 }
 
 ISR(AC0_AC_vect) {
-    
+   current_step = (current_step + 1) % 6;
+   commutate();
 
 }
