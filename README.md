@@ -5,6 +5,8 @@
 This esc takes a 1ms - 2ms period PWM signal as input and drives
 a triple phase motor for up to 20A draw. This was initially designed for an autonomous quadcopter, utilizing a 3300KV motor.
 With the implementation of adaptive startup, it should be able to startup and drive heavier loads than propellors as well.
+This project utilizes the many peripherals on the AVR MCU such as the Timer B, Timer E, Wave Extension (WEX), for wave capture
+and PWM generation with inversion + deadtime, to drive a triple half-bridge. 
 
 ## Components
 - AVR16EB32 MCU
