@@ -28,4 +28,4 @@ temp: ./tmp/expanded.c
 .PHONY: flash
 
 flash: $(BIN_DIR)/esc.hex
-	avrdude -c jtag2updi -P /dev/ttyACM0 -b 115200 -p avr16eb32 -U flash:w:esc.hex:i 
+	avrdude -c jtag2updi -P /dev/ttyACM0 -b 115200 -p avr16eb32 -U flash:w:$(BIN_DIR)/esc.hex:i 

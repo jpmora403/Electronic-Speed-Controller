@@ -26,7 +26,11 @@ int main() {
     //enable global interrupts
     CPU_SREG |= CPU_I_bp;
 
-    while (1) {
+    //Disable clk prescaler
+    CPU_CCP = 0xD8;
+    CLKCTRL.MCLKCTRLB = 0x0;
+
+  /*  while (1) {
         
         switch (mode) {
             case IDLE: idle(); break;
@@ -36,7 +40,9 @@ int main() {
         }
 
     }
-
+*/
+    while (1)
+        TCE0.CMP0 = 208;
     return 0;
 }
 
