@@ -4,8 +4,11 @@
 #include "esc.h"
 
 #define CLKSPD 20000000UL
-#define MAX_THROTTLE_CYCLES = 2000UL
-#define MIN_THROTTLE_CYCLES = 1000UL
+#define MAX_THROTTLE_CYCLES  2000UL
+#define MIN_THROTTLE_CYCLES  1000UL
+#define LOW_C TCE0.CMP0
+#define LOW_B TCE0.CMP1
+#define LOW_A TCE0.CMP2
 
 //Speed resolution is 416 (log(416) in bits)
 
@@ -41,16 +44,19 @@ int main() {
 
     }
 */
-    while (1)
-        TCE0.CMP0 = 208;
+    while (1) {
+        LOW_A = 100;
+        LOW_B = 200;
+        LOW_C = 300;
+    }
     return 0;
 }
 
 void idle() {
     while (mode == IDLE) {
-        TCE0.CMP0 = 0;
-        TCE0.CMP1 = 0;
-        TCE0.CMP2 = 0;
+        LOW_A = 0;
+        LOW_B = 0;
+        LOW_C = 0;
     }
     return;
 }
@@ -84,44 +90,44 @@ void commutate() {
 
     switch (current_step) {
         case (AB):
-            TCE0.CMP0 = 416 - throttle;
-            TCE0.CMP1 = throttle;
-            TCE0.CMP2 = 0;
+            LOW_A = 416 - throttle;
+            LOW_B = throttle;
+            LOW_C = 0;
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
             TCE0.CTRLECLR |= 0x2;
             break;
         case (AC):
-            TCE0.CMP0 = 416 - throttle;
-            TCE0.CMP1 = 0;
-            TCE0.CMP2 = throttle;
+            LOW_A = 416 - throttle;
+            LOW_B = 0;
+            LOW_C = throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
             TCE0.CTRLECLR |= 0x2;
             break;
         case (BC):
-            TCE0.CMP0 = 0;
-            TCE0.CMP1 = 416 - throttle;
-            TCE0.CMP2 = throttle;
+            LOW_A = 0;
+            LOW_B = 416 - throttle;
+            LOW_C = throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP0_gc;
             TCE0.CTRLECLR |= 0x2;
             break;
         case (BA):
-            TCE0.CMP0 = throttle;
-            TCE0.CMP1 = 416 - throttle;
-            TCE0.CMP2 = 0;
+            LOW_A = throttle;
+            LOW_B = 416 - throttle;
+            LOW_C = 0;
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
             TCE0.CTRLECLR |= 0x2;
             break;
         case (CA):
-            TCE0.CMP0 = throttle;
-            TCE0.CMP1 = 0;
-            TCE0.CMP2 = 416 - throttle;
+            LOW_A = throttle;
+            LOW_B = 0;
+            LOW_C = 416 - throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
             TCE0.CTRLECLR |= 0x2;
             break;
         case (CB):
-            TCE0.CMP0 = throttle;
-            TCE0.CMP1 = 416 - throttle;
-            TCE0.CMP2 = 0;
+            LOW_A = throttle;
+            LOW_B = 416 - throttle;
+            LOW_C = 0;
             AC0_MUXCTRL |= AC_MUXPOS_AINP0_gc;
             TCE0.CTRLECLR |= 0x2;
             break;

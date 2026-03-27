@@ -7,13 +7,13 @@
 void wex(void) {
 
     //DTI on wo
-    WEX0.CTRLA = 0x3;
+    WEX0.CTRLA = 0x7;
     //DTI in clock cycles = (145ns turn off time + 70ns safety margin)
     //                      * 20Mhz = 4.3 => 5 clock cycles
     //5 clock cycles * 5 for lower sink current in version 1
     WEX0.DTBOTH = 25;
 
-    WEX0.OUTOVEN = 0x1F;
+    WEX0.OUTOVEN = 0x3F;
     
 
 }

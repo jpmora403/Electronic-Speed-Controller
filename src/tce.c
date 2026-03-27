@@ -8,8 +8,7 @@ void tce0(void) {
 
     
     //Set pins as outputs
-    PORTA.DIRSET = 1 | 1 << 2 | 1 << 3 |
-                       1 << 4 | 1 << 5;
+    PORTA.DIRSET = 0x3F;
     
     TCE0.CTRLA = 0x01;
     TCE0.CTRLB = TCE_WGMODE_DSTOP_gc;
