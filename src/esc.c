@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include "esc.h"
 
-#define CLKSPD 20000000UL
 #define MAX_THROTTLE_CYCLES  2000UL
 #define MIN_THROTTLE_CYCLES  1000UL
 #define LOW_C TCE0.CMP0
@@ -25,6 +24,7 @@ int main() {
     tce0();
     wex();
     ac0();
+    usart_init();
 
     //enable global interrupts
     CPU_SREG |= CPU_I_bp;

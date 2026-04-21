@@ -28,7 +28,7 @@ temp: ./tmp/expanded.c
 .PHONY: flash all clean
 
 flash: $(BIN_DIR)/esc.hex
-	avrdude -c jtag2updi -P /dev/ttyACM0 -b 115200 -p avr16eb32 -U flash:w:$(BIN_DIR)/esc.hex:i
+	avrdude -c serialupdi -P /dev/ttyUSB0 -b 115200 -p avr16eb32 -U flash:w:$(BIN_DIR)/esc.hex:i
 
 clean:
 	rm -f bin/* obj/* tmp/*

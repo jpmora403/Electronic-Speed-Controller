@@ -3,21 +3,26 @@
 static volatile ring_buffer buffer; 
 
 void usart_init() {
+    cli();
 
     PORTMUX.USARTROUTEA = PORTMUX_USART0_ALT3_gc;
-    PORTC.DIRSET |= 1 << 4;
+    PORTD.DIRSET |= 1 << 4;
 
     USART0.BAUD = (uint16_t)((CLKSPD * 64.0) / (16.0 * 115200) + 0.5);
 
     USART0.CTRLB |= 1 << 6;
+
+    sei();
 }
 
 void usart_putchar(char c) {
     //Disable DRE interrupts for safety
     USART0.CTRLA = 0x0;
 
-    if (buffer_is_full)
-       return;
+    if (buffer_is_full()) {
+        USART0.CTRLA = 1 << 5;
+        return;
+    }
     else {
         buffer.data[buffer.head] = c;
         //check for wrap around if (buffer.head == BUFFER_SIZE - 1)
@@ -32,7 +37,7 @@ void usart_putchar(char c) {
 }
 
 ISR (USART0_DRE_vect) {
-    if (buffer_is_empty) 
+    if (buffer_is_empty()) 
         USART0.CTRLA = 0;
     else {
         USART0.TXDATAL = buffer.data[buffer.tail];
