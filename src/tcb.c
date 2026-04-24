@@ -36,8 +36,8 @@ ISR (TCB0_INT_vect) {
             throttle = (temp * 416) / 1000;
         }
     }
-    usart_putchar('9');
-    usart_putchar('\n');
+    _putchar('9');
+    _putchar('\n');
 
 }
 

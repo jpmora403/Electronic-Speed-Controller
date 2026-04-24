@@ -49,7 +49,7 @@ void stall(void);
 void get_speed(void);
 
 void usart_init(void);
-void usart_putchar(char c);
+void _putchar(char c);
 bool buffer_is_empty(void);
 bool buffer_is_full(void);
 

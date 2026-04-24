@@ -15,7 +15,7 @@ void usart_init() {
     sei();
 }
 
-void usart_putchar(char c) {
+void _putchar(char c) {
     //Disable DRE interrupts for safety
     USART0.CTRLA = 0x0;
 
