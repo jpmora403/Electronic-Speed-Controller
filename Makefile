@@ -3,7 +3,7 @@ CC=avr-gcc
 CLKSPD=20000000
 CFLAGS=-mmcu=$(MCU) -Os -DF_CPU=$(CLKSPD)
 MCU=avr16eb32
-SRC=$(wildcard ./src/*.c)
+SRC=$(wildcard ./src/*.c) printf/printf.c
 OBJ=$(patsubst ./src/%.c, ./obj/%.o, $(SRC))
 OBJ_DIR=./obj
 BIN_DIR=./bin
