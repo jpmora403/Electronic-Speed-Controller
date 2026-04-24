@@ -12,7 +12,7 @@ SRC_DIR=./src
 all: $(BIN_DIR)/esc.hex
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) -I$(HEADERS) -I./include $(CFLAGS) -c $< -o $@
+	$(CC) -I$(HEADERS) -I./include -I printf/ $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/esc.elf: $(OBJ) | $(BIN_DIR)
 	$(CC) $(CFLAGS) -o $@ $^

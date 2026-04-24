@@ -15,7 +15,7 @@ void usart_init() {
     sei();
 }
 
-void _putchar(char c) {
+void _putchar(char character) {
     //Disable DRE interrupts for safety
     USART0.CTRLA = 0x0;
 
@@ -24,7 +24,7 @@ void _putchar(char c) {
         return;
     }
     else {
-        buffer.data[buffer.head] = c;
+        buffer.data[buffer.head] = character;
         //check for wrap around if (buffer.head == BUFFER_SIZE - 1)
         if (buffer.head == BUFFER_SIZE - 1)
             buffer.head = 0;
@@ -34,6 +34,7 @@ void _putchar(char c) {
 
     //Re-enable interrupts
     USART0.CTRLA = 1 << 5;
+
 }
 
 ISR (USART0_DRE_vect) {

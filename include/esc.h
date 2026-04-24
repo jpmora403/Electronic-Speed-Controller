@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "printf.h"
 
 #define BUFFER_SIZE 16
 #define CLKSPD 20000000UL 
@@ -49,7 +50,7 @@ void stall(void);
 void get_speed(void);
 
 void usart_init(void);
-void _putchar(char c);
+void _putchar(char character);
 bool buffer_is_empty(void);
 bool buffer_is_full(void);
 
