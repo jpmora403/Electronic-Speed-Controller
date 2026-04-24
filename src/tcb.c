@@ -7,15 +7,18 @@
 
 void tcb0(void) {
 
-    PORTA.PIN7CTRL = PORT_ISC_INTDISABLE_gc;
-    PORTA.EVGENCTRLA = PORT_EVGEN1SEL_PIN7_gc;
+    PORTA.PIN7CTRL = 0;
+    PORTA.EVGENCTRLA = 7;
+    PORTA.DIRSET = 1 << 7;
     //Channel selection
     EVSYS.CHANNEL0 = EVSYS_CHANNEL_PORTA_EV1_gc;
     EVSYS.USERTCB0CAPT = EVSYS_USER_CHANNEL0_gc;
 
     //Configure TCB0
-    TCB0.CTRLB = TCB_CNTMODE_PW_gc;
-    TCB0.EVCTRL = 0x3;
+    TCB0.CTRLA = 0x1;
+    TCB0.CTRLB = 0x4;
+    TCB0.EVCTRL = 0x1;
+    TCB0.INTCTRL = 0x3;
     
 }
 
@@ -33,7 +36,8 @@ ISR (TCB0_INT_vect) {
             throttle = (temp * 416) / 1000;
         }
     }
-    usart_putchar('$');
+    usart_putchar('9');
+    usart_putchar('\n');
 
 }
 

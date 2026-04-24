@@ -44,10 +44,11 @@ int main() {
 
     }
 */
-    while (1) {
-        LOW_A = 100;
-        LOW_B = 200;
-        LOW_C = 300;
+    LOW_B = 50;
+    LOW_C = 400;
+
+    while (1){
+        LOW_A = throttle;
     }
     return 0;
 }
