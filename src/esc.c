@@ -49,7 +49,7 @@ int main() {
 
     while (1){
         LOW_A = throttle;
-        printf("throttle: %u \n", throttle);
+        printf("throttle: %u\n", throttle);
     }
     return 0;
 }

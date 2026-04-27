@@ -30,8 +30,14 @@ ISR (TCB0_INT_vect) {
     }
     if (TCB0.INTFLAGS & 0x1) {
             mode = RUNNING;
-            throttle = TCB0.CCMP;
-        
+            uint32_t temp = TCB0.CCMP;
+            if (temp < 20000)
+                throttle = 10;
+            else if (temp > 40000)
+                throttle = 416;
+            else 
+                throttle = (temp - 20000) * 416 / 20000;
+//            printf("temp: %u\n", temp);
     }
 }
 
