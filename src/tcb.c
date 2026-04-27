@@ -7,11 +7,11 @@
 
 void tcb0(void) {
 
-    PORTC.PIN0CTRL = 1 << 3;
-    PORTC.EVGENCTRLA = 0;
+    PORTA.PIN7CTRL = 1 << 3;
+    PORTA.EVGENCTRLA = 7;
 //    PORTA.DIRSET = 1 << 7;
     //Channel selection
-    EVSYS.CHANNEL0 = 0x44;
+    EVSYS.CHANNEL0 = 0x40;
     EVSYS.USERTCB0CAPT = EVSYS_USER_CHANNEL0_gc;
 
     //Configure TCB0
