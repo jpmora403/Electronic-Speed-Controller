@@ -25,14 +25,12 @@ void tcb0(void) {
 ISR (TCB0_INT_vect) {
    if (TCB0.INTFLAGS & 0x2) {
         throttle = 0;
-        mode = IDLE;
         TCB0.INTFLAGS = 0x2;
     }
     if (TCB0.INTFLAGS & 0x1) {
-            mode = RUNNING;
             uint32_t temp = TCB0.CCMP;
             if (temp < 20000)
-                throttle = 10;
+                throttle = 0;
             else if (temp > 40000)
                 throttle = 416;
             else 

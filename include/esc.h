@@ -4,6 +4,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "printf.h"
+#include "state_machine.h"
 
 #define BUFFER_SIZE 16
 #define CLKSPD 20000000UL 
@@ -14,7 +15,6 @@ typedef enum {
     BA,
     CA,
     CB,
-    STOP
 
 } step_t;
 
@@ -24,7 +24,7 @@ typedef enum {
     RUNNING,
     STALL
 
-} mode_t;
+} state_t;
 
 typedef struct {
     int head;
@@ -33,7 +33,7 @@ typedef struct {
 } ring_buffer;
 
 extern volatile step_t current_step;
-extern volatile mode_t mode;
+extern volatile state_t state;
 extern volatile uint16_t throttle;
 
 void ac0(void);

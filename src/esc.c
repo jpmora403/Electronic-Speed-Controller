@@ -13,8 +13,9 @@
 
 //Global variables
 volatile uint16_t throttle = 0; //In units of clock cycles
-volatile step_t current_step = STOP;
-volatile mode_t mode = IDLE;
+volatile step_t current_step;
+volatile state_t state = IDLE;
+volatile void (*state_function)(void);
 
 int main() {
 
@@ -33,56 +34,16 @@ int main() {
     CPU_CCP = 0xD8;
     CLKCTRL.MCLKCTRLB = 0x0;
 
-  /*  while (1) {
-        
-        switch (mode) {
-            case IDLE: idle(); break;
-            case STARTUP: startup(); break;
-            case RUNNING: running(); break;
-            case STALL: stall(); break;
-        }
+    state_function = idle;
 
+    while (retry_counter != 4) {
+        state_function();
+        printf("state: %d\n", state);
     }
-*/
-    LOW_B = 50;
-    LOW_C = 400;
-
-    while (1){
-        LOW_A = throttle;
-        printf("throttle: %u\n", throttle);
-    }
-    return 0;
-}
-
-void idle() {
-    while (mode == IDLE) {
-        LOW_A = 0;
-        LOW_B = 0;
-        LOW_C = 0;
-    }
-    return;
-}
-
-void startup() {
-    //Disable ac interrupts for forced commutation
-    AC0.INTCTRL = 0;
-
-    current_step = AB;
     
-
-}
-
-void running() {
-    while (mode == RUNNING) {
-        if (mode == STALL)
-            return;
+    while(1) {
+        PORTC.OUTCLR = 1 << 1;
     }
-
-}
-
-void stall() {
-
-    return;
 
 }
 
@@ -96,44 +57,45 @@ void commutate() {
             LOW_B = throttle;
             LOW_C = 0;
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = AC;
             break;
         case (AC):
             LOW_A = 416 - throttle;
             LOW_B = 0;
             LOW_C = throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = BC;
             break;
         case (BC):
             LOW_A = 0;
             LOW_B = 416 - throttle;
             LOW_C = throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP0_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = BA;
             break;
         case (BA):
             LOW_A = throttle;
             LOW_B = 416 - throttle;
             LOW_C = 0;
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = CA;
             break;
         case (CA):
             LOW_A = throttle;
             LOW_B = 0;
             LOW_C = 416 - throttle;
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = CB;
             break;
         case (CB):
             LOW_A = throttle;
             LOW_B = 416 - throttle;
             LOW_C = 0;
             AC0_MUXCTRL |= AC_MUXPOS_AINP0_gc;
-            TCE0.CTRLECLR |= 0x2;
+            current_step = AB;
             break;
     }
+    TCE0.CTRLECLR |= 0x2;
 
 }
 

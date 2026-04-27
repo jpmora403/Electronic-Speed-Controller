@@ -31,7 +31,10 @@ void ac0(void) {
 }
 
 ISR(AC0_AC_vect) {
-   current_step = (current_step + 1) % 6;
+    if (state = STARTUP) {
+        back_emf_sufficient = true;
+        return;
+    }
    commutate();
 
 }
