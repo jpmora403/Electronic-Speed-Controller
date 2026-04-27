@@ -21,7 +21,7 @@ void ac0(void) {
     PORTC.PIN3CTRL = PORT_ISC_INPUT_DISABLE_gc;
     
     //small hysteresis & enable
-    AC0.CTRLA = AC_HYSMODE_SMALL_gc | 0x1;
+    AC0.CTRLA = AC_HYSMODE_MEDIUM_gc | 0x1;
     //Neg input = neutral, pos initialized to phase C
     AC0.MUXCTRL = AC_INITVAL_LOW_gc | AC_MUXNEG_AINN1_gc
                     | AC_MUXPOS_AINP6_gc;
@@ -31,7 +31,7 @@ void ac0(void) {
 }
 
 ISR(AC0_AC_vect) {
-    if (state = STARTUP) {
+    if (state == STARTUP) {
         back_emf_sufficient = true;
         return;
     }

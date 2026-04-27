@@ -14,7 +14,7 @@
 //Global variables
 volatile uint16_t throttle = 0; //In units of clock cycles
 volatile step_t current_step;
-volatile state_t state = IDLE;
+volatile state_t state;
 volatile void (*state_function)(void);
 
 int main() {
@@ -35,7 +35,8 @@ int main() {
     CLKCTRL.MCLKCTRLB = 0x0;
 
     state_function = idle;
-
+    state = IDLE;
+        printf("state: %d\n", state);
     while (retry_counter != 4) {
         state_function();
         printf("state: %d\n", state);

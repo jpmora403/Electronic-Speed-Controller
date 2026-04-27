@@ -7,7 +7,7 @@ volatile int retry_counter;
 
 void idle () {
     state = IDLE;
-
+    throttle = 0;
     back_emf_sufficient = false;
     min_throttle = 10;
     no_back_emf = false;
@@ -18,6 +18,8 @@ void idle () {
             state_function = startup;
             break;
         }
+        printf("state: %d\n", state);
+        printf("throttle: %u\n", throttle);
     }
 }
 
@@ -29,11 +31,17 @@ void startup() {
     throttle = 10;
     current_step = AB;
     back_emf_sufficient = false;
-    while (~(back_emf_sufficient)) {
+    while (!(back_emf_sufficient)) {
         for (int i = 0; i < 5; i++) {
             commutate();
         }
         throttle += 10;
+      /*  if (throttle >=416) {
+            state_function = stall;
+            break;
+        } */
+        printf("state: %d\n", state);
+printf("throttle: %u\n", throttle);
     }
     min_throttle = throttle;
     state_function = running;
@@ -53,6 +61,8 @@ void running() {
             state_function = stall;
            break;
         }
+        printf("state: %d\n", state);
+printf("throttle: %u\n", throttle);
     }
 
 }
