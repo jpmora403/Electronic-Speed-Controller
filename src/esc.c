@@ -3,12 +3,6 @@
 #include <stdint.h>
 #include "esc.h"
 
-#define MAX_THROTTLE_CYCLES  2000UL
-#define MIN_THROTTLE_CYCLES  1000UL
-#define LOW_C TCE0.CMP0
-#define LOW_B TCE0.CMP1
-#define LOW_A TCE0.CMP2
-
 //Speed resolution is 416 (log(416) in bits)
 
 //Global variables
@@ -36,7 +30,6 @@ int main() {
 
     state_function = idle;
     state = IDLE;
-        printf("state: %d\n", state);
     while (retry_counter != 4) {
         state_function();
         printf("state: %d\n", state);
@@ -57,6 +50,7 @@ void commutate() {
             LOW_A = 416 - throttle;
             LOW_B = throttle;
             LOW_C = 0;
+            AC0.MUXCTRL &= ~(0x38);
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
             current_step = AC;
             break;
@@ -64,6 +58,7 @@ void commutate() {
             LOW_A = 416 - throttle;
             LOW_B = 0;
             LOW_C = throttle;
+            AC0.MUXCTRL &= ~(0x38);
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
             current_step = BC;
             break;
@@ -71,6 +66,7 @@ void commutate() {
             LOW_A = 0;
             LOW_B = 416 - throttle;
             LOW_C = throttle;
+            AC0.MUXCTRL &= ~(0x38);
             AC0.MUXCTRL |= AC_MUXPOS_AINP0_gc;
             current_step = BA;
             break;
@@ -78,6 +74,7 @@ void commutate() {
             LOW_A = throttle;
             LOW_B = 416 - throttle;
             LOW_C = 0;
+            AC0.MUXCTRL &= ~(0x38);
             AC0.MUXCTRL |= AC_MUXPOS_AINP6_gc;
             current_step = CA;
             break;
@@ -85,6 +82,7 @@ void commutate() {
             LOW_A = throttle;
             LOW_B = 0;
             LOW_C = 416 - throttle;
+            AC0.MUXCTRL &= ~(0x38);
             AC0.MUXCTRL |= AC_MUXPOS_AINP4_gc;
             current_step = CB;
             break;
@@ -92,7 +90,8 @@ void commutate() {
             LOW_A = throttle;
             LOW_B = 416 - throttle;
             LOW_C = 0;
-            AC0_MUXCTRL |= AC_MUXPOS_AINP0_gc;
+            AC0.MUXCTRL &= ~(0x38);
+            AC0.MUXCTRL |= AC_MUXPOS_AINP0_gc;
             current_step = AB;
             break;
     }

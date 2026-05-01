@@ -3,11 +3,19 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/cpufunc.h>
 #include "printf.h"
 #include "state_machine.h"
+#include "wait.h"
 
-#define BUFFER_SIZE 16
+#define BUFFER_SIZE 64
 #define CLKSPD 20000000UL 
+#define MAX_THROTTLE_CYCLES  2000UL
+#define MIN_THROTTLE_CYCLES  1000UL
+#define LOW_C TCE0.CMP0
+#define LOW_B TCE0.CMP1
+#define LOW_A TCE0.CMP2
+
 typedef enum {
     AB,
     AC,

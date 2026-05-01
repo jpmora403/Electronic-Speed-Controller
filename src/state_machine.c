@@ -8,10 +8,12 @@ volatile int retry_counter;
 void idle () {
     state = IDLE;
     throttle = 0;
+    LOW_A = LOW_B = LOW_C = 0;
     back_emf_sufficient = false;
     min_throttle = 10;
     no_back_emf = false;
     PORTC.OUTCLR = 1 << 1;
+    AC0.INTCTRL = 0;
 
     while (1) {
         if (throttle > 10) {
@@ -19,7 +21,6 @@ void idle () {
             break;
         }
         printf("state: %d\n", state);
-        printf("throttle: %u\n", throttle);
     }
 }
 
@@ -27,23 +28,19 @@ void startup() {
     state = STARTUP;
     //Disable tcb and ac interrupts for forced commutation
     TCB0.INTCTRL = 0;
+    AC0.INTCTRL = 0;
     PORTC.OUTSET = 1 << 1; //gate driver Enable
-    throttle = 10;
     current_step = AB;
+    throttle = 20;
     back_emf_sufficient = false;
+    int wait_time = 50; //50 clk cycles == 1ms
     while (!(back_emf_sufficient)) {
-        for (int i = 0; i < 5; i++) {
+        for (wait_time; wait_time >=0; wait_time--) 
             commutate();
-        }
-        throttle += 10;
-      /*  if (throttle >=416) {
-            state_function = stall;
-            break;
-        } */
-        printf("state: %d\n", state);
-printf("throttle: %u\n", throttle);
-    }
-    min_throttle = throttle;
+        state_function = stall;
+        return;
+   }
+    
     state_function = running;
     back_emf_sufficient = false;
     TCB0.INTCTRL = 0x3;
@@ -53,7 +50,7 @@ void running() {
     state = RUNNING;
 
     while (1) {
-        if (throttle < (min_throttle + 10)) {
+        if (throttle < 20 ) {
             state_function = idle;
             break;
         }
@@ -62,7 +59,6 @@ void running() {
            break;
         }
         printf("state: %d\n", state);
-printf("throttle: %u\n", throttle);
     }
 
 }
