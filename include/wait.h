@@ -1,1 +1,1 @@
-extern void wait_us(int _20_ms);
+extern void wait_20us(int _20_ms);
