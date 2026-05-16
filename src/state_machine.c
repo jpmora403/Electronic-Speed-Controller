@@ -34,13 +34,10 @@ void startup() {
     throttle = 20;
     back_emf_sufficient = false;
     int wait_time = 50; //50 clk cycles == 1ms
-    while (!(back_emf_sufficient)) {
-        for (wait_time; wait_time >=0; wait_time--) 
-            commutate();
-        state_function = stall;
-        return;
-   }
-    
+    while (1) {
+        commutate();
+        wait_20us(wait_time);
+    }
     state_function = running;
     back_emf_sufficient = false;
     TCB0.INTCTRL = 0x3;

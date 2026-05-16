@@ -28,7 +28,7 @@ int main() {
     CPU_CCP = 0xD8;
     CLKCTRL.MCLKCTRLB = 0x0;
 
-    state_function = idle;
+    state_function = startup;
     state = IDLE;
     while (retry_counter != 4) {
         state_function();
