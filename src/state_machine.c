@@ -16,7 +16,7 @@ void idle () {
     AC0.INTCTRL = 0;
 
     while (1) {
-        if (throttle > 10) {
+        if (throttle > 20) {
             state_function = startup;
             break;
         }
@@ -33,10 +33,11 @@ void startup() {
     current_step = AB;
     throttle = 20;
     back_emf_sufficient = false;
-    int wait_time = 50; //50 clk cycles == 1ms
-    while (1) {
+    int wait_time = 10000; //50 clk cycles == 1ms
+    while (!back_emf_suffiecient) {
         commutate();
         wait_20us(wait_time);
+        wait_time -= 10;
     }
     state_function = running;
     back_emf_sufficient = false;
