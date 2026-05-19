@@ -34,7 +34,7 @@ void startup() {
     throttle = 20;
     back_emf_sufficient = false;
     int wait_time = 10000; //50 clk cycles == 1ms
-    while (!back_emf_suffiecient) {
+    while (!back_emf_sufficient) {
         commutate();
         wait_20us(wait_time);
         wait_time -= 10;
